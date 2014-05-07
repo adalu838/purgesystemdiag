@@ -11,13 +11,14 @@ d = diagnosisSequences.F00;
 
 figure(1);
 subplot(211)
-plot( d.time, d.y);
+plot(d.y);
 title('F00')
 subplot(212)
-plot( d.time, d.D);
+plot(d.D);
 hold on;
-plot( d.time, d.P,'r');
+plot(d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 d = diagnosisSequences.F05;
 
@@ -30,6 +31,7 @@ plot( d.time, d.D);
 hold on;
 plot( d.time, d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 d = diagnosisSequences.F10;
 
@@ -42,6 +44,7 @@ plot( d.time, d.D);
 hold on;
 plot( d.time, d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 d = diagnosisSequences.F35;
 
@@ -54,6 +57,7 @@ plot( d.time, d.D);
 hold on;
 plot( d.time, d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 d = diagnosisSequences.F50;
 
@@ -66,6 +70,7 @@ plot( d.time, d.D);
 hold on;
 plot( d.time, d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 d = diagnosisSequences.Fxx;
 
@@ -78,6 +83,7 @@ plot( d.time, d.D);
 hold on;
 plot( d.time, d.P,'r');
 legend('Diagnosis valve position','Purge valve position');
+hold off;
 
 %% *** Set index intervals for all datasets
 diagnosisSequences.F00.biasIdx  = []; %(Samples [start end] for bias estimation)
