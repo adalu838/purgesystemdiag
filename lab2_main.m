@@ -7,81 +7,81 @@ close all
 load diagnosisFile.mat
 
 %% *** Plot data ***
-d = diagnosisSequences.F00;
+d_hat = diagnosisSequences.F00;
 
 figure(1);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('F00')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
-d = diagnosisSequences.F05;
+d_hat = diagnosisSequences.F05;
 
 figure(2);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('F05')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
-d = diagnosisSequences.F10;
+d_hat = diagnosisSequences.F10;
 
 figure(3);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('F10')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
-d = diagnosisSequences.F35;
+d_hat = diagnosisSequences.F35;
 
 figure(4);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('F35')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
-d = diagnosisSequences.F50;
+d_hat = diagnosisSequences.F50;
 
 figure(5);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('F50')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
-d = diagnosisSequences.Fxx;
+d_hat = diagnosisSequences.Fxx;
 
 figure(6);
 subplot(211)
-plot(d.y);
+plot(d_hat.y);
 title('Fxx')
 subplot(212)
-plot(d.D);
+plot(d_hat.D);
 hold on;
-plot(d.P,'r');
+plot(d_hat.P,'r');
 legend('Diagnosis valve position','Purge valve position');
 hold off;
 
@@ -106,32 +106,162 @@ diagnosisSequences.F50.diagIdx  = [782 820];    %
 diagnosisSequences.F50.diagIdx2 = [1938 1975];  %
 
 diagnosisSequences.Fxx.biasIdx  = [9275 9999];  %
-diagnosisSequences.Fxx.diagIdx  = [1717 8697];  %
+diagnosisSequences.Fxx.diagIdx  = [1717 8690];  %
 
 %% *** Detection results ***
 pfa  = 0.01; % Probability of false alarm
 
-d = diagnosisSequences.F00;
-res00a  = Leakage_test( d, d.biasIdx, d.diagIdx, pfa)  ;
-res00b  = Leakage_test( d, d.biasIdx, d.diagIdx2, pfa) ;
+d_hat = diagnosisSequences.F00;
+res00a  = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa)  ;
+res00b  = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx2, pfa) ;
 
-d = diagnosisSequences.F05;
-res05  = Leakage_test( d, d.biasIdx, d.diagIdx, pfa) ;
+d_hat = diagnosisSequences.F05;
+res05  = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa) ;
 
-d = diagnosisSequences.F10;
-res10a = Leakage_test( d, d.biasIdx, d.diagIdx, pfa) ;
-res10b = Leakage_test( d, d.biasIdx, d.diagIdx2, pfa);
+d_hat = diagnosisSequences.F10;
+res10a = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa) ;
+res10b = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx2, pfa);
 
-d = diagnosisSequences.F35;
-res35a = Leakage_test( d, d.biasIdx, d.diagIdx, pfa) ;
-res35b = Leakage_test( d, d.biasIdx, d.diagIdx2, pfa);
+d_hat = diagnosisSequences.F35;
+res35a = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa) ;
+res35b = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx2, pfa);
 
-d = diagnosisSequences.F50;
-res50a = Leakage_test( d, d.biasIdx, d.diagIdx, pfa) ;
-res50b = Leakage_test( d, d.biasIdx, d.diagIdx2, pfa);
+d_hat = diagnosisSequences.F50;
+res50a = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa) ;
+res50b = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx2, pfa);
 
-d = diagnosisSequences.Fxx;
-resxx  = Leakage_test( d, d.biasIdx, d.diagIdx, pfa) ;
+d_hat = diagnosisSequences.Fxx;
+resxx  = Leakage_test( d_hat, d_hat.biasIdx, d_hat.diagIdx, pfa) ;
 
-%% *** Assumptions validation
+%% *** Assumptions validation ***
+japan{1} = 'F00';
+japan{2} = 'F05';
+japan{3} = 'F10';
+japan{4} = 'F35';
+japan{5} = 'F50';
+japan{6} = 'FXX';
 
+
+figure(7); clf;
+subplot(2,2,1);
+plot(xcorr(res00a.R))
+title([japan{1} 'a'])
+subplot(2,2,2);
+normplot(res00a.R);
+title([japan{1} 'a'])
+subplot(2,2,3);
+plot(xcorr(res00b.R))
+title([japan{1} 'b'])
+subplot(2,2,4);
+normplot(res00b.R);
+title([japan{1} 'b'])
+
+figure(8); clf;
+subplot(2,1,1);
+plot(xcorr(res05.R));
+title([japan{2}])
+subplot(2,1,2);
+normplot(res05.R);
+
+figure(9); clf;
+subplot(2,2,1);
+plot(xcorr(res10a.R))
+title([japan{3} 'a'])
+subplot(2,2,2);
+normplot(res10a.R);
+title([japan{3} 'a'])
+subplot(2,2,3);
+plot(xcorr(res10b.R))
+title([japan{3} 'b'])
+subplot(2,2,4);
+normplot(res10b.R);
+title([japan{3} 'b'])
+
+figure(10); clf;
+subplot(2,2,1);
+plot(xcorr(res35a.R))
+title([japan{4} 'a'])
+subplot(2,2,2);
+normplot(res35a.R);
+title([japan{4} 'a'])
+subplot(2,2,3);
+plot(xcorr(res35b.R))
+title([japan{4} 'b'])
+subplot(2,2,4);
+normplot(res35b.R);
+title([japan{4} 'b'])
+
+figure(11); clf;
+subplot(2,2,1);
+plot(xcorr(res50a.R))
+title([japan{5} 'a'])
+subplot(2,2,2);
+normplot(res50a.R);
+title([japan{5} 'a'])
+subplot(2,2,3);
+plot(xcorr(res50b.R))
+title([japan{5} 'b'])
+subplot(2,2,4);
+normplot(res50b.R);
+title([japan{5} 'b'])
+
+figure(12); clf;
+subplot(2,1,1);
+plot(xcorr(resxx.R));
+title([japan{6}])
+subplot(2,1,2);
+normplot(resxx.R);
+title([japan{6}])
+
+%% 
+
+test(1) = res00a.T/res00a.J;
+test(2) = res05.T/res05.J;
+test(3) = res10a.T/res10a.J;
+test(4) = res35a.T/res35a.J;
+test(5) = res50b.T/res50b.J; % dulig
+test(6) = resxx.T/resxx.J;
+
+figure(13); clf;
+plot([0 5 10 35]*0.1, test(1:4), 0.1*[0 5 10 35], [test(6) test(6) test(6) test(6)])
+
+%% Estimation model of k2
+
+rho = 1.2041;
+
+B = [res05.k2;
+     %res10a.k2;
+     %res10b.k2;
+     res35a.k2;
+     res35b.k2;
+     res50a.k2;
+     res50b.k2];
+
+A = [0.0005^2;
+     %0.001^2;
+     %0.001^2;
+     0.0035^2;
+     0.0035^2;
+     0.005^2;
+     0.005^2;];
+
+C = A\B;
+
+% Estimation of orifice diameter in the unknown case
+
+d_hat(1) = sqrt(res05.k2/C);
+d_hat(2) = sqrt(res10a.k2/C);
+d_hat(3) = sqrt(res10b.k2/C);
+d_hat(4) = sqrt(res35a.k2/C);
+d_hat(5) = sqrt(res35b.k2/C);
+d_hat(6) = sqrt(res50a.k2/C);
+d_hat(7) = sqrt(res50b.k2/C);
+d_hat(8) = sqrt(resxx.k2/C);
+
+figure(14); clf;
+plot(real(d_hat(1:end-1))./(10^(-4)*[5 10 10 35 35 50 50]))
+hold on
+plot([1 7],[0.9 1.1;0.9 1.1],'r-.')
+hold off
+xlabel('Dataset')
+ylabel('Normaliserad diameterskattning')
