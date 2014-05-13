@@ -2,7 +2,7 @@
 clc
 clear
 close all
-
+cd Y:/Desktop/TSFS06/lab2/purgesystemdiag
 %% *** Data Loading ***
 load diagnosisFile.mat
 
@@ -11,20 +11,25 @@ d_hat = diagnosisSequences.F00;
 
 figure(1);
 subplot(211)
-plot(d_hat.y);
+plot(d_hat.time, d_hat.y);
 title('F00')
+xlabel('Tid [s]')
+ylabel('Tryck i bränsletanken');
 subplot(212)
-plot(d_hat.D);
+plot(d_hat.time, d_hat.D);
 hold on;
-plot(d_hat.P,'r');
-legend('Diagnosis valve position','Purge valve position');
+plot(d_hat.time, d_hat.P,'r');
+legend('Diagnosventilposition','Purgeventilposition');
+xlabel('Tid [s]')
+ylabel('Ventilläge');
 hold off;
+%pdf_print('pFxx');
 
 d_hat = diagnosisSequences.F05;
 
 figure(2);
 subplot(211)
-plot(d_hat.y);
+plot(d_hat.time, d_hat.y);
 title('F05')
 subplot(212)
 plot(d_hat.D);
@@ -36,8 +41,8 @@ hold off;
 d_hat = diagnosisSequences.F10;
 
 figure(3);
-subplot(211)
-plot(d_hat.y);
+%subplot(211)
+plot(d_hat.time, d_hat.y);
 title('F10')
 subplot(212)
 plot(d_hat.D);
@@ -50,7 +55,7 @@ d_hat = diagnosisSequences.F35;
 
 figure(4);
 subplot(211)
-plot(d_hat.y);
+plot(d_hat.time, d_hat.y);
 title('F35')
 subplot(212)
 plot(d_hat.D);
@@ -63,7 +68,7 @@ d_hat = diagnosisSequences.F50;
 
 figure(5);
 subplot(211)
-plot(d_hat.y);
+plot(d_hat.time, d_hat.y);
 title('F50')
 subplot(212)
 plot(d_hat.D);
@@ -76,14 +81,19 @@ d_hat = diagnosisSequences.Fxx;
 
 figure(6);
 subplot(211)
-plot(d_hat.y);
+plot(d_hat.time, d_hat.y);
 title('Fxx')
+xlabel('Sample')
+ylabel('Tryck i bränsletanken');
 subplot(212)
 plot(d_hat.D);
 hold on;
 plot(d_hat.P,'r');
-legend('Diagnosis valve position','Purge valve position');
+legend('Diagnosventilposition','Purgeventilposition');
+xlabel('Sample')
+ylabel('Ventilläge');
 hold off;
+
 
 %% *** Set index intervals for all datasets
 diagnosisSequences.F00.biasIdx  = [953 1011];   %(Samples [start end] for bias estimation)
@@ -145,17 +155,19 @@ japan{6} = 'FXX';
 figure(7); clf;
 subplot(2,2,1);
 plot(xcorr(res00a.R))
-title([japan{1} 'a'])
+title('Autocorrelation av residualen i fall A')
 subplot(2,2,2);
 normplot(res00a.R);
-title([japan{1} 'a'])
+title('Normal Probability Plot (Fall A)')
 subplot(2,2,3);
 plot(xcorr(res00b.R))
-title([japan{1} 'b'])
+title('Autocorrelation av residualen i fall B')
 subplot(2,2,4);
 normplot(res00b.R);
-title([japan{1} 'b'])
+title('Normal Probability Plot (Fall B)')
+pdf_print('modelval');
 
+%%
 figure(8); clf;
 subplot(2,1,1);
 plot(xcorr(res05.R));
@@ -222,9 +234,12 @@ test(4) = res35a.T/res35a.J;
 test(5) = res50b.T/res50b.J; % dulig
 test(6) = resxx.T/resxx.J;
 
-figure(13); clf;
-plot([0 5 10 35]*0.1, test(1:4), 0.1*[0 5 10 35], [test(6) test(6) test(6) test(6)])
+xp=linspace(0.5,3.5,10);
+yp=interp1([0.5 1 3.5],test(2:4),xp,'spline');
 
+figure(13); clf;
+plot([0 xp],[test(1) yp], 0.1*[0 5 10 35], [test(6) test(6) test(6) test(6)])
+%axis([0 0.6 0.8 1.2]);
 %% Estimation model of k2
 
 rho = 1.2041;
