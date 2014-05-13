@@ -264,19 +264,20 @@ C = A\B;
 
 % Estimation of orifice diameter in the unknown case
 
-d_hat(1) = sqrt(res05.k2/C);
-d_hat(2) = sqrt(res10a.k2/C);
-d_hat(3) = sqrt(res10b.k2/C);
-d_hat(4) = sqrt(res35a.k2/C);
-d_hat(5) = sqrt(res35b.k2/C);
-d_hat(6) = sqrt(res50a.k2/C);
-d_hat(7) = sqrt(res50b.k2/C);
-d_hat(8) = sqrt(resxx.k2/C);
+d_haten(1) = sqrt(res05.k2/C);
+d_haten(2) = sqrt(res10a.k2/C);
+d_haten(3) = sqrt(res10b.k2/C);
+d_haten(4) = sqrt(res35a.k2/C);
+d_haten(5) = sqrt(res35b.k2/C);
+d_haten(6) = sqrt(res50a.k2/C);
+d_haten(7) = sqrt(res50b.k2/C);
+d_haten(8) = sqrt(resxx.k2/C);
 
 figure(14); clf;
-plot(real(d_hat(1:end-1))./(10^(-4)*[5 10 10 35 35 50 50]))
+plot([0.5 0.95 1.05 3.45 3.55 4.95 5 ],real(d_haten(1:end-1))./(10^(-4)*[5 10 10 35 35 50 50]),'o-')
 hold on
-plot([1 7],[0.9 1.1;0.9 1.1],'r-.')
+plot([0.5 5],[0.9 1.1;0.9 1.1],'r-.')
 hold off
-xlabel('Dataset')
+xlabel('Håldiameter [mm]')
 ylabel('Normaliserad diameterskattning')
+pdf_print('d_hat_norm');
